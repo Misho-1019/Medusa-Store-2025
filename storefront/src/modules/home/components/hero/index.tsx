@@ -19,11 +19,8 @@ const Hero = () => {
             Discover amazing products just for you
           </Heading>
         </span>
-        <a
-          href="https://rizn.bg/"
-          target="_blank"
-        >
-          <h1 style={{ textDecoration: "underline" }}>Visit the us</h1>
+        <a href="/store" className="inline-block">
+          <Button>Shop Now</Button>
         </a>
       </div>
     </div>
