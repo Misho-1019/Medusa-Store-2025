@@ -1,3 +1,4 @@
+// @ts-nocheck
 const checkEnvVariables = require("./check-env-variables")
 
 checkEnvVariables()
