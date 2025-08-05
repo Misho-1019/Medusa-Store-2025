@@ -1,29 +1,48 @@
-const { initialize } = require("@medusajs/medusa")
+const { MedusaContainer } = require("@medusajs/framework")
 
 async function createAdmin() {
   try {
-    // Initialize Medusa
-    const { container } = await initialize()
-    const userService = container.resolve("userService")
+    // Get the container instance
+    const container = MedusaContainer.getInstance()
+    
+    // Resolve the services
+    const userModuleService = container.resolve("userModuleService")
+    const authModuleService = container.resolve("authModuleService")
+    
+    const adminEmail = "mikailtorres99@gmail.com"
+    const adminPassword = "Mvt12345"
     
     // Check if admin already exists
-    const existingUsers = await userService.list()
+    const [existingUsers] = await userModuleService.listAndCountUsers({
+      email: adminEmail
+    })
+    
     if (existingUsers.length > 0) {
-      console.log("Admin users already exist, skipping creation")
+      console.log("Admin user already exists, skipping creation")
       return
     }
     
     // Create admin user
-    await userService.create({
-      email: "mikailtorres99@gmail.com",
-      password: "Mvt12345",
-      role: "admin"
+    const user = await userModuleService.createUsers({
+      email: adminEmail,
+      first_name: "Admin",
+      last_name: "User"
     })
     
-    console.log("Admin user created successfully!")
+    // Create auth identity for the user with password
+    await authModuleService.createAuthIdentities({
+      provider_id: "emailpass",
+      entity_id: adminEmail,
+      provider_metadata: {
+        email: adminEmail,
+        password: adminPassword
+      }
+    })
+    
+    console.log("Admin user created successfully with email:", adminEmail)
+    
   } catch (error) {
     console.log("Error creating admin:", error.message)
-    // Don't fail the deployment if admin creation fails
   }
   
   process.exit(0)
