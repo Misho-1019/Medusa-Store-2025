@@ -43,8 +43,8 @@ const medusaConfig = {
     resave: false,
     saveUninitialized: false,
     store: process.env.NODE_ENV === 'production' && REDIS_URL ? 
-      new (require('connect-redis').default(require('express-session')))({
-        url: REDIS_URL
+      new (require('connect-redis').RedisStore)({
+        client: require('redis').createClient({ url: REDIS_URL })
       }) : undefined,
     cookie: {
       secure: process.env.NODE_ENV === 'production',
