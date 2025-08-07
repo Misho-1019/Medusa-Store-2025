@@ -33,12 +33,27 @@ const medusaConfig = {
     redisUrl: REDIS_URL,
     workerMode: WORKER_MODE,
     http: {
-      adminCors: ADMIN_CORS,
-      authCors: AUTH_CORS,
-      storeCors: STORE_CORS,
-      jwtSecret: JWT_SECRET,
-      cookieSecret: COOKIE_SECRET
+  adminCors: ADMIN_CORS,
+  authCors: AUTH_CORS,
+  storeCors: STORE_CORS,
+  jwtSecret: JWT_SECRET,
+  cookieSecret: COOKIE_SECRET,
+  session: {
+    name: "connect.sid",
+    resave: false,
+    saveUninitialized: false,
+    store: process.env.NODE_ENV === 'production' && REDIS_URL ? 
+      new (require('connect-redis').default(require('express-session')))({
+        url: REDIS_URL
+      }) : undefined,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 10 * 60 * 1000, // 10 minutes
     },
+    secret: COOKIE_SECRET,
+  }
+},
     build: {
       rollupOptions: {
         external: ["@medusajs/dashboard"]
