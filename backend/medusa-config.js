@@ -40,12 +40,13 @@ const medusaConfig = {
       cookieSecret: COOKIE_SECRET,
       session: {
         name: "medusa-session",
-        resave: false,
-        saveUninitialized: false,
+        resave: true,  // Changed from false
+        saveUninitialized: true,  // Changed from false
         cookie: {
-          secure: process.env.NODE_ENV === 'production',
+          secure: false,  // Changed - try without secure first
           httpOnly: true,
           maxAge: 24 * 60 * 60 * 1000, // 24 hours
+          sameSite: 'lax'  // Added this
         },
         secret: COOKIE_SECRET,
       }
