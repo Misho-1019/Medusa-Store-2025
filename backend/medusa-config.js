@@ -37,7 +37,18 @@ const medusaConfig = {
       authCors: AUTH_CORS,
       storeCors: STORE_CORS,
       jwtSecret: JWT_SECRET,
-      cookieSecret: COOKIE_SECRET
+      cookieSecret: COOKIE_SECRET,
+      session: {
+        name: "medusa-session",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          secure: process.env.NODE_ENV === 'production',
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        },
+        secret: COOKIE_SECRET,
+      }
     },
     build: {
       rollupOptions: {
