@@ -30,7 +30,7 @@ const medusaConfig = {
   projectConfig: {
     databaseUrl: DATABASE_URL,
     databaseLogging: false,
-    redisUrl: REDIS_URL,
+    // redisUrl: REDIS_URL, // Temporarily disabled
     workerMode: WORKER_MODE,
     http: {
       adminCors: ADMIN_CORS,
@@ -86,22 +86,23 @@ const medusaConfig = {
         ]
       }
     },
-    ...(REDIS_URL ? [{
-      key: Modules.EVENT_BUS,
-      resolve: '@medusajs/event-bus-redis',
-      options: {
-        redisUrl: REDIS_URL
-      }
-    },
-    {
-      key: Modules.WORKFLOW_ENGINE,
-      resolve: '@medusajs/workflow-engine-redis',
-      options: {
-        redis: {
-          url: REDIS_URL,
-        }
-      }
-    }] : []),
+    // Temporarily disabled Redis modules
+    // ...(REDIS_URL ? [{
+    //   key: Modules.EVENT_BUS,
+    //   resolve: '@medusajs/event-bus-redis',
+    //   options: {
+    //     redisUrl: REDIS_URL
+    //   }
+    // },
+    // {
+    //   key: Modules.WORKFLOW_ENGINE,
+    //   resolve: '@medusajs/workflow-engine-redis',
+    //   options: {
+    //     redis: {
+    //       url: REDIS_URL,
+    //     }
+    //   }
+    // }] : []),
     ...(SENDGRID_API_KEY && SENDGRID_FROM_EMAIL || RESEND_API_KEY && RESEND_FROM_EMAIL ? [{
       key: Modules.NOTIFICATION,
       resolve: '@medusajs/notification',
